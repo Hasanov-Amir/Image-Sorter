@@ -1,0 +1,13 @@
+imagedominantcolor==1.0.1
+dominantcolorrecognizer==1.0.0
+sqlalchemy==2.0.31
+Flask-Migrate==4.0.7
+Flask-SQLAlchemy==3.1.1
+Flask==3.0.3
+marshmallow-sqlalchemy==1.0.0
+marshmallow==3.21.3
+flask-marshmallow==1.2.1
+python-dotenv==1.0.1
+psycopg2==2.9.9
+flask-restful==0.3.10
+easygui==0.98.3

@@ -1,0 +1,152 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: #E0FBE2;
+}
+
+main {
+    height: 100vh;
+    background-color: #E0FBE2;
+}
+
+.add-folder-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 22%;
+}
+
+#add-folder {
+    width: 690px;
+    height: 137px;
+    border-radius: 30px;
+    font-size: 96px;
+    border: none;
+    background-color: #ACE1AF;
+    color: #fff;
+}
+
+#add-folder:hover {
+    background-color: #B0EBB4;
+    color: #fff;
+    cursor: pointer;
+}
+
+.images-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.image-container {
+    display: inline-block !important;
+    margin: 10px;
+}
+
+.image-container:hover {
+    cursor: pointer;
+}
+
+.images {
+    list-style: none !important;
+}
+
+.float-container {
+    pointer-events: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.burger-container {
+    pointer-events: all;
+    background-color: #ace1af;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    position: fixed;
+    right: 0;
+}
+
+.burger-container:hover {
+    cursor: pointer;
+}
+
+.burger {
+    padding-top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.line {
+    margin-top: 5px;
+    width: 35px;
+    height: 5px;
+    background-color: #fff;
+}
+
+.menu {
+    /* position: fixed; */
+    pointer-events: all;
+    visibility: hidden;
+    margin-top: 60px;
+    background-color: #fff;
+    width: 500px;
+    height: 730px;
+    border-radius: 20px;
+}
+
+.color-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.confirm-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.confirm {
+    border: none;
+    border-radius: 30px;
+    width: 450px;
+    height: 100px;
+    font-size: 86px;
+    color: #fff;
+    background-color: #ACE1AF;
+}
+
+.confirm:hover {
+    cursor: pointer;
+    background-color: #B0EBB4;
+}
+
+.add-folder-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.add-folder-menu {
+    border: none;
+    border-radius: 30px;
+    width: 450px;
+    height: 100px;
+    font-size: 86px;
+    color: #fff;
+    background-color: #ACE1AF;
+}
+
+.add-folder-menu:hover {
+    cursor: pointer;
+    background-color: #B0EBB4;
+}
