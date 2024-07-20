@@ -8,7 +8,6 @@ from marshmallow import ValidationError
 from app.controllers.image.serializer import ImageSerializer
 from app.controllers.sorting.serializer import SortingSerialzer
 from app.utils.color import yuv_distance
-from core.extensions import db
 from data.models import Image
 
 
