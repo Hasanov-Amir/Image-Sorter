@@ -1,8 +1,10 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    let page = 1;
+    let sorted = false;
     const addFolderButton = document.getElementById('add-folder');
     const burgerMenu = document.querySelector('.burger-container');
-    const confirmButton = document.querySelector('.confirm')
-    const addFolderMenu = document.querySelector('.add-folder-menu')
+    const confirmButton = document.querySelector('.confirm');
+    const addFolderMenu = document.querySelector('.add-folder-menu');
     let menuStatus = false;
     var colorWheel = new ReinventedColorWheel({
         appendTo: document.querySelector('.color-container'),
@@ -10,26 +12,45 @@ document.addEventListener('DOMContentLoaded', async () => {
         wheelThickness: 40,
         handleDiameter: 16,
         wheelReflectsSaturation: false,
-    })
+    });
 
     async function main() {
-        const images = await getImages();
-        if (images) {
+        page = 1
+        const images = await getImages(page);
+        if (images.images) {
             hideAddFolderButton();
             const folders = await getFolders();
-            renderImages(images, folders);
+            renderImages(images.images, folders);
         }
     }
 
+    window.addEventListener("scroll", async () => {
+        const endOfPage = window.innerHeight + window.scrollY >= document.querySelector('body').scrollHeight;
+        if (endOfPage) {
+            if (sorted) {
+                page++
+                const images = await getSortedimages(colorWheel.rgb, page)
+                const folders = await getFolders();
+                renderImages(images.images, folders, false)
+            } else {
+                page++
+                const images = await getImages(page)
+                const folders = await getFolders();
+                renderImages(images.images, folders, false)
+            }
+        }
+    });
+
     addFolderMenu.addEventListener('click', async () => {
+        page = 1
         try {
             const path = await window.dialog.openFolder();
             if (path[0]) {
                 const folderId = await addFolder(path[0]);
                 await scan(folderId);
-                const images = await getImages();
+                const images = await getImages(page);
                 const folders = await getFolders();
-                renderImages(images, folders);
+                renderImages(images.images, folders);
                 initializeViews();
             }
         } catch (error) {
@@ -38,15 +59,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     addFolderButton.addEventListener('click', async () => {
+        page = 1
         try {
             const path = await window.dialog.openFolder();
             if (path[0]) {
                 const folderId = await addFolder(path[0]);
                 await scan(folderId);
-                const images = await getImages();
+                const images = await getImages(page);
                 const folders = await getFolders();
-                renderImages(images, folders);
-                initializeViews();
+                renderImages(images.images, folders);
             }
         } catch (error) {
             alert("Error adding folder:", error);
@@ -65,19 +86,24 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     confirmButton.addEventListener('click', async () => {
-        const sortedImages = await getSortedimages(colorWheel.rgb);
+        page = 1;
+        const sortedImages = await getSortedimages(colorWheel.rgb, page);
+        sorted = true;
         const folders = await getFolders();
-        renderImages(sortedImages, folders)
+        renderImages(sortedImages.images, folders)
     });
 
     await main();
 });
 
-async function getSortedimages(color) {
+async function getSortedimages(color, page) {
     try {
-        const response = await axios.post("http://127.0.0.1:8080/api/sort/", {color: color});
+        const response = await axios.post(`http://127.0.0.1:8080/api/sort/?page=${page}&orientation=horizontal`, {color: color});
+        console.log(page);
+        console.log(response.data);
         return response.data;
     } catch (error) {
+        console.log(error);
         alert("Error sorting images:", error);
     }
 }
@@ -108,9 +134,9 @@ async function scan(folderId) {
     }
 }
 
-async function getImages() {
+async function getImages(page) {
     try {
-        const response = await axios.get("http://127.0.0.1:8080/api/image/");
+        const response = await axios.get(`http://127.0.0.1:8080/api/image/?page=${page}`);
         return response.data;
     } catch (error) {
         alert("Error getting images:", error);
@@ -131,9 +157,11 @@ function getFolderPath(folders, folderId) {
 
 let viewer;
 
-function renderImages(images, folders) {
+function renderImages(images, folders, clear=true) {
     const imagesContainer = document.querySelector(".images");
-    imagesContainer.innerHTML = '';
+    if (clear) {
+        imagesContainer.innerHTML = '';
+    }
     images.forEach(image => {
         const filePath = getFolderPath(folders, image.folder_id) + "\\" + image.filename;
         const imageElement = `

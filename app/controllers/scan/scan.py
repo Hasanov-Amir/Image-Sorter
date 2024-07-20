@@ -53,17 +53,9 @@ class ScanAPI(Resource):
 
         with app.app_context():
             filename = file_path.split(os.sep)[-1]
-            # is_image_exist = Image.filter(
-            #     filename=filename, folder_id=self.folder_id
-            # )
-
-            # if is_image_exist:
-            #     return None
-
             image = pil_image.open(file_path).convert("RGB")
             dominant_color = get_dominant_color(image)
             orientation = get_image_orientation(image)
-
             print(file_path, dominant_color, orientation)
 
             return {
